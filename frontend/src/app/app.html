@@ -7,6 +7,38 @@
     </p>
   </section>
 
+  <section class="task-form-panel" aria-label="Create task">
+    <div>
+      <p class="eyebrow">New Task</p>
+      <h2>Create a task</h2>
+    </div>
+
+    <form [formGroup]="taskForm" (ngSubmit)="createTask()" class="task-form">
+      <label>
+        Title
+        <input type="text" formControlName="title" placeholder="Add task title" />
+      </label>
+
+      <label>
+        Description
+        <textarea formControlName="description" rows="3" placeholder="Describe the work"></textarea>
+      </label>
+
+      <label>
+        Priority
+        <select formControlName="priority">
+          @for (priority of priorities; track priority) {
+            <option [value]="priority">{{ priority }}</option>
+          }
+        </select>
+      </label>
+
+      <button type="submit" [disabled]="isSaving()">
+        {{ isSaving() ? 'Creating...' : 'Create Task' }}
+      </button>
+    </form>
+  </section>
+
   @if (isLoading()) {
     <p class="state-message">Loading tasks...</p>
   }

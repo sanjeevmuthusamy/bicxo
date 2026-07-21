@@ -1,3 +1,8 @@
+.board-page,
+.board-page * {
+  box-sizing: border-box;
+}
+
 .board-page {
   min-height: 100vh;
   padding: 48px;
@@ -32,6 +37,81 @@ h1 {
   margin: 16px 0 0;
   color: #64748b;
   font-size: 1.1rem;
+}
+
+.task-form-panel {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 28px;
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.07);
+
+  h2 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+}
+
+.task-form {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.2fr) minmax(260px, 2fr) minmax(140px, 0.8fr) auto;
+  gap: 16px;
+  align-items: stretch;
+
+  label {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    color: #334155;
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    padding: 12px 14px;
+    color: #172033;
+    font: inherit;
+    outline: none;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+  }
+
+  button {
+    align-self: end;
+    min-width: 132px;
+    min-height: 48px;
+    border: 0;
+    border-radius: 14px;
+    padding: 13px 18px;
+    background: #2563eb;
+    color: #ffffff;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 }
 
 .board {
@@ -151,6 +231,11 @@ h1 {
 @media (max-width: 900px) {
   .board-page {
     padding: 28px;
+  }
+
+  .task-form-panel,
+  .task-form {
+    grid-template-columns: 1fr;
   }
 
   .board {

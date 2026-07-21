@@ -12,6 +12,14 @@ export interface Task {
   updated_at: string;
 }
 
+export interface CreateTaskPayload {
+  title: string;
+  description: string;
+  priority: TaskPriority;
+  status: TaskStatus;
+  assigneeId: string;
+}
+
 export interface BoardColumn {
   title: TaskStatus;
   tasks: Task[];
