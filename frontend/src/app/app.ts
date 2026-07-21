@@ -1,3 +1,9 @@
+import {
+  CdkDragDrop,
+  DragDropModule,
+  moveItemInArray,
+  transferArrayItem
+} from '@angular/cdk/drag-drop';
 import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -6,7 +12,7 @@ import { TaskService } from './services/task.service';
 
 @Component({
   selector: 'app-root',
-  imports: [ReactiveFormsModule],
+  imports: [DragDropModule, ReactiveFormsModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -15,6 +21,7 @@ export class App implements OnInit {
   protected readonly priorities: TaskPriority[] = ['Low', 'Medium', 'High'];
   protected readonly currentUserId = 'user-1';
   protected readonly columns = signal<BoardColumn[]>(this.buildColumns([]));
+  protected readonly connectedDropLists = this.statuses;
   protected readonly isLoading = signal(true);
   protected readonly isSaving = signal(false);
   protected readonly errorMessage = signal('');
@@ -61,6 +68,35 @@ export class App implements OnInit {
       error: () => {
         this.errorMessage.set('Unable to create task. Please try again.');
         this.isSaving.set(false);
+      }
+    });
+  }
+
+  protected dropTask(event: CdkDragDrop<Task[]>, status: TaskStatus): void {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      this.columns.set([...this.columns()]);
+      return;
+    }
+
+    const task = event.previousContainer.data[event.previousIndex];
+
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
+
+    this.columns.set([...this.columns()]);
+
+    this.taskService.updateTaskStatus(task.id, status).subscribe({
+      next: () => {
+        task.status = status;
+      },
+      error: () => {
+        this.errorMessage.set('Unable to update task status. Reloading board.');
+        this.loadTasks();
       }
     });
   }

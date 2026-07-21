@@ -55,9 +55,16 @@
           <span>{{ column.tasks.length }}</span>
         </header>
 
-        <div class="task-list">
+        <div
+          class="task-list"
+          cdkDropList
+          [id]="column.title"
+          [cdkDropListData]="column.tasks"
+          [cdkDropListConnectedTo]="connectedDropLists"
+          (cdkDropListDropped)="dropTask($event, column.title)"
+        >
           @for (task of column.tasks; track task.id) {
-            <article class="task-card">
+            <article class="task-card" cdkDrag>
               <div class="task-card__header">
                 <h3>{{ task.title }}</h3>
                 <span class="priority" [class]="'priority priority--' + task.priority.toLowerCase()">
