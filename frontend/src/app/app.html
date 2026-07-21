@@ -7,8 +7,16 @@
     </p>
   </section>
 
+  @if (isLoading()) {
+    <p class="state-message">Loading tasks...</p>
+  }
+
+  @if (errorMessage()) {
+    <p class="state-message state-message--error">{{ errorMessage() }}</p>
+  }
+
   <section class="board" aria-label="Kanban task board">
-    @for (column of columns; track column.title) {
+    @for (column of columns(); track column.title) {
       <article class="board-column">
         <header class="column-header">
           <h2>{{ column.title }}</h2>
@@ -26,6 +34,8 @@
               </div>
               <p>{{ task.description }}</p>
             </article>
+          } @empty {
+            <p class="empty-column">No tasks in this column yet.</p>
           }
         </div>
       </article>

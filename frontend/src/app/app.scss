@@ -40,6 +40,20 @@ h1 {
   gap: 20px;
 }
 
+.state-message {
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #e0ecff;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.state-message--error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
 .board-column {
   min-height: 440px;
   padding: 18px;
@@ -75,6 +89,15 @@ h1 {
 .task-list {
   display: grid;
   gap: 14px;
+}
+
+.empty-column {
+  margin: 0;
+  padding: 20px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 18px;
+  color: #94a3b8;
+  text-align: center;
 }
 
 .task-card {
