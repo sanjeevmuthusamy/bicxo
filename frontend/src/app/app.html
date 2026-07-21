@@ -7,6 +7,28 @@
     </p>
   </section>
 
+  <section class="filters" aria-label="Task filters">
+    <label>
+      Search
+      <input
+        type="search"
+        placeholder="Search by title or priority"
+        [value]="searchTerm()"
+        (input)="updateSearchTerm($any($event.target).value)"
+      />
+    </label>
+
+    <label>
+      Priority
+      <select [value]="priorityFilter()" (change)="updatePriorityFilter($any($event.target).value)">
+        <option value="All">All priorities</option>
+        @for (priority of priorities; track priority) {
+          <option [value]="priority">{{ priority }}</option>
+        }
+      </select>
+    </label>
+  </section>
+
   <section class="task-form-panel" aria-label="Create task">
     <div>
       <p class="eyebrow">New Task</p>

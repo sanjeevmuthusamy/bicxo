@@ -20,11 +20,14 @@ export class App implements OnInit {
   protected readonly statuses: TaskStatus[] = ['To Do', 'In Progress', 'Done'];
   protected readonly priorities: TaskPriority[] = ['Low', 'Medium', 'High'];
   protected readonly currentUserId = 'user-1';
+  protected readonly allTasks = signal<Task[]>([]);
   protected readonly columns = signal<BoardColumn[]>(this.buildColumns([]));
   protected readonly connectedDropLists = this.statuses;
   protected readonly isLoading = signal(true);
   protected readonly isSaving = signal(false);
   protected readonly errorMessage = signal('');
+  protected readonly searchTerm = signal('');
+  protected readonly priorityFilter = signal<TaskPriority | 'All'>('All');
   protected readonly taskForm;
 
   constructor(
@@ -72,6 +75,16 @@ export class App implements OnInit {
     });
   }
 
+  protected updateSearchTerm(value: string): void {
+    this.searchTerm.set(value);
+    this.applyFilters();
+  }
+
+  protected updatePriorityFilter(value: string): void {
+    this.priorityFilter.set(value as TaskPriority | 'All');
+    this.applyFilters();
+  }
+
   protected dropTask(event: CdkDragDrop<Task[]>, status: TaskStatus): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -106,7 +119,8 @@ export class App implements OnInit {
 
     this.taskService.getTasks().subscribe({
       next: (tasks) => {
-        this.columns.set(this.buildColumns(tasks));
+        this.allTasks.set(tasks);
+        this.applyFilters();
         this.isLoading.set(false);
       },
       error: () => {
@@ -121,5 +135,22 @@ export class App implements OnInit {
       title: status,
       tasks: tasks.filter((task) => task.status === status)
     }));
+  }
+
+  private applyFilters(): void {
+    const search = this.searchTerm().trim().toLowerCase();
+    const priority = this.priorityFilter();
+
+    const filteredTasks = this.allTasks().filter((task) => {
+      const matchesSearch =
+        !search ||
+        task.title.toLowerCase().includes(search) ||
+        task.priority.toLowerCase().includes(search);
+      const matchesPriority = priority === 'All' || task.priority === priority;
+
+      return matchesSearch && matchesPriority;
+    });
+
+    this.columns.set(this.buildColumns(filteredTasks));
   }
 }
