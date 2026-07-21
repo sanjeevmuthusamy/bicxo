@@ -41,8 +41,9 @@ h1 {
 
 .filters {
   display: grid;
-  grid-template-columns: minmax(240px, 1fr) minmax(180px, 260px);
+  grid-template-columns: auto minmax(240px, 1fr) minmax(180px, 260px);
   gap: 16px;
+  align-items: end;
   margin-bottom: 20px;
   padding: 18px;
   border: 1px solid #e2e8f0;
@@ -73,6 +74,33 @@ h1 {
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
   }
+}
+
+.scope-toggle {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #f8fafc;
+}
+
+.scope-toggle button {
+  min-height: 36px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 16px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+}
+
+.scope-toggle .scope-toggle__button--active {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
 }
 
 .task-form-panel {

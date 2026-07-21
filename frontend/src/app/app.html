@@ -8,6 +8,23 @@
   </section>
 
   <section class="filters" aria-label="Task filters">
+    <div class="scope-toggle" aria-label="Task assignment scope">
+      <button
+        type="button"
+        [class.scope-toggle__button--active]="taskScope() === 'All'"
+        (click)="updateTaskScope('All')"
+      >
+        All
+      </button>
+      <button
+        type="button"
+        [class.scope-toggle__button--active]="taskScope() === 'Me'"
+        (click)="updateTaskScope('Me')"
+      >
+        Me
+      </button>
+    </div>
+
     <label>
       Search
       <input

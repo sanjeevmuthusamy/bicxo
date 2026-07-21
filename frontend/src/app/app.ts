@@ -28,6 +28,7 @@ export class App implements OnInit {
   protected readonly errorMessage = signal('');
   protected readonly searchTerm = signal('');
   protected readonly priorityFilter = signal<TaskPriority | 'All'>('All');
+  protected readonly taskScope = signal<'All' | 'Me'>('All');
   protected readonly taskForm;
 
   constructor(
@@ -85,6 +86,11 @@ export class App implements OnInit {
     this.applyFilters();
   }
 
+  protected updateTaskScope(scope: 'All' | 'Me'): void {
+    this.taskScope.set(scope);
+    this.loadTasks();
+  }
+
   protected dropTask(event: CdkDragDrop<Task[]>, status: TaskStatus): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -117,7 +123,9 @@ export class App implements OnInit {
   private loadTasks(): void {
     this.isLoading.set(true);
 
-    this.taskService.getTasks().subscribe({
+    const assigneeId = this.taskScope() === 'Me' ? this.currentUserId : undefined;
+
+    this.taskService.getTasks(assigneeId).subscribe({
       next: (tasks) => {
         this.allTasks.set(tasks);
         this.applyFilters();
