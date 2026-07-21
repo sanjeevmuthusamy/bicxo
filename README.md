@@ -35,6 +35,16 @@ PUT http://localhost:3000/api/tasks/:id
 PATCH http://localhost:3000/api/tasks/:id/status
 ```
 
+## Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+The Angular app starts on `http://localhost:4200`.
+
 ## Database Setup
 
 Create the PostgreSQL database:
