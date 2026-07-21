@@ -9,7 +9,10 @@ const { validateStatus, validateTaskPayload } = require('../utils/task-validatio
 
 async function getTasks(req, res, next) {
   try {
-    const tasks = await findAllTasks();
+    const tasks = await findAllTasks({
+      assigneeId: req.query.assigneeId
+    });
+
     res.json(tasks);
   } catch (error) {
     next(error);

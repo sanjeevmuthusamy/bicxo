@@ -1,10 +1,20 @@
 const { pool } = require('../config/db');
 
-async function findAllTasks() {
+async function findAllTasks(filters = {}) {
+  const values = [];
+  let whereClause = '';
+
+  if (filters.assigneeId) {
+    values.push(filters.assigneeId);
+    whereClause = 'WHERE assignee_id = $1';
+  }
+
   const result = await pool.query(
     `SELECT id, title, description, priority, status, assignee_id, created_at, updated_at
      FROM tasks
-     ORDER BY created_at DESC`
+     ${whereClause}
+     ORDER BY created_at DESC`,
+    values
   );
 
   return result.rows;

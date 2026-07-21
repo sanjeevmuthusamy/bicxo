@@ -29,6 +29,7 @@ Task endpoints:
 
 ```bash
 GET http://localhost:3000/api/tasks
+GET http://localhost:3000/api/tasks?assigneeId=user-1
 POST http://localhost:3000/api/tasks
 PUT http://localhost:3000/api/tasks/:id
 PATCH http://localhost:3000/api/tasks/:id/status
