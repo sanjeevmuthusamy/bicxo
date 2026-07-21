@@ -25,3 +25,13 @@ Health check:
 GET http://localhost:3000/api/health
 ```
 
+## Database Setup
+
+Create the PostgreSQL database:
+
+```bash
+createdb bicxo_sprint_board
+psql -U postgres -d bicxo_sprint_board -f database/schema.sql
+psql -U postgres -d bicxo_sprint_board -f database/seed.sql
+```
+
