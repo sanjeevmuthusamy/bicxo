@@ -7,6 +7,7 @@ import {
 import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { environment } from '../environments/environment';
 import { BoardColumn, Task, TaskPriority, TaskStatus } from './models/task.model';
 import { TaskService } from './services/task.service';
 
@@ -19,7 +20,7 @@ import { TaskService } from './services/task.service';
 export class App implements OnInit {
   protected readonly statuses: TaskStatus[] = ['To Do', 'In Progress', 'Done'];
   protected readonly priorities: TaskPriority[] = ['Low', 'Medium', 'High'];
-  protected readonly currentUserId = 'user-1';
+  protected readonly currentUserId = environment.currentUserId;
   protected readonly allTasks = signal<Task[]>([]);
   protected readonly columns = signal<BoardColumn[]>(this.buildColumns([]));
   protected readonly connectedDropLists = this.statuses;
