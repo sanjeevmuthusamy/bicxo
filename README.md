@@ -16,6 +16,7 @@ npm install
 copy .env.example .env
 npm run dev
 ```
+note: update .env file db password with yours.
 
 The API starts on `http://localhost:3000`.
 
