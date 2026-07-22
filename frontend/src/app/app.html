@@ -1,0 +1,122 @@
+<main class="board-page">
+  <section class="hero">
+    <p class="eyebrow">BiCXO Assignment</p>
+    <h1>Agile Sprint Board</h1>
+    <p class="subtitle">
+      Manage tasks across a simple Kanban workflow with clear priorities and status tracking.
+    </p>
+  </section>
+
+  <section class="filters" aria-label="Task filters">
+    <div class="scope-toggle" aria-label="Task assignment scope">
+      <button
+        type="button"
+        [class.scope-toggle__button--active]="taskScope() === 'All'"
+        (click)="updateTaskScope('All')"
+      >
+        All
+      </button>
+      <button
+        type="button"
+        [class.scope-toggle__button--active]="taskScope() === 'Me'"
+        (click)="updateTaskScope('Me')"
+      >
+        Me
+      </button>
+    </div>
+
+    <label>
+      Search
+      <input
+        type="search"
+        placeholder="Search by title or priority"
+        [value]="searchTerm()"
+        (input)="updateSearchTerm($any($event.target).value)"
+      />
+    </label>
+
+    <label>
+      Priority
+      <select [value]="priorityFilter()" (change)="updatePriorityFilter($any($event.target).value)">
+        <option value="All">All priorities</option>
+        @for (priority of priorities; track priority) {
+          <option [value]="priority">{{ priority }}</option>
+        }
+      </select>
+    </label>
+  </section>
+
+  <section class="task-form-panel" aria-label="Create task">
+    <div>
+      <p class="eyebrow">New Task</p>
+      <h2>Create a task</h2>
+    </div>
+
+    <form [formGroup]="taskForm" (ngSubmit)="createTask()" class="task-form">
+      <label>
+        <span class="required">Title</span>
+        <input type="text" formControlName="title" placeholder="Add task title" />
+      </label>
+
+      <label>
+        <span class="required">Description</span>
+        <textarea formControlName="description" rows="3" placeholder="Describe the work"></textarea>
+      </label>
+
+      <label>
+        <span class="required">Priority</span>
+        <select formControlName="priority">
+          @for (priority of priorities; track priority) {
+            <option [value]="priority">{{ priority }}</option>
+          }
+        </select>
+      </label>
+
+      <button type="submit" [disabled]="isSaving()">
+        {{ isSaving() ? 'Creating...' : 'Create Task' }}
+      </button>
+    </form>
+  </section>
+
+  @if (isLoading()) {
+    <p class="state-message">Loading tasks...</p>
+  }
+
+  @if (errorMessage()) {
+    <p class="state-message state-message--error">{{ errorMessage() }}</p>
+  }
+
+  <section class="board" aria-label="Kanban task board">
+    @for (column of columns(); track column.title) {
+      <article class="board-column">
+        <header class="column-header">
+          <h2>{{ column.title }}</h2>
+          <span>{{ column.tasks.length }}</span>
+        </header>
+
+        <div
+          class="task-list"
+          cdkDropList
+          [id]="column.title"
+          [cdkDropListData]="column.tasks"
+          [cdkDropListConnectedTo]="connectedDropLists"
+          (cdkDropListDropped)="dropTask($event, column.title)"
+        >
+          @for (task of column.tasks; track task.id) {
+            <article class="task-card" cdkDrag>
+              <div class="task-card__header">
+                <h3>{{ task.title }}</h3>
+                <span class="priority" [class]="'priority priority--' + task.priority.toLowerCase()">
+                  {{ task.priority }}
+                </span>
+              </div>
+              <p>{{ task.description }}</p>
+            </article>
+          } @empty {
+            <p class="empty-column">No tasks in this column yet.</p>
+          }
+        </div>
+      </article>
+    }
+  </section>
+</main>

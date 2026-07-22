@@ -16,6 +16,7 @@ npm install
 copy .env.example .env
 npm run dev
 ```
+note: update .env file db password with yours.
 
 The API starts on `http://localhost:3000`.
 
@@ -34,6 +35,16 @@ POST http://localhost:3000/api/tasks
 PUT http://localhost:3000/api/tasks/:id
 PATCH http://localhost:3000/api/tasks/:id/status
 ```
+
+## Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+The Angular app starts on `http://localhost:4200`.
 
 ## Database Setup
 
