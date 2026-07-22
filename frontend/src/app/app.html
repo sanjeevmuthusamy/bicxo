@@ -54,17 +54,17 @@
 
     <form [formGroup]="taskForm" (ngSubmit)="createTask()" class="task-form">
       <label>
-        Title
+        <span class="required">Title</span>
         <input type="text" formControlName="title" placeholder="Add task title" />
       </label>
 
       <label>
-        Description
+        <span class="required">Description</span>
         <textarea formControlName="description" rows="3" placeholder="Describe the work"></textarea>
       </label>
 
       <label>
-        Priority
+        <span class="required">Priority</span>
         <select formControlName="priority">
           @for (priority of priorities; track priority) {
             <option [value]="priority">{{ priority }}</option>
